@@ -6,7 +6,7 @@ class FieldData
 {
     public int $id;
     public string $name;
-    public string $img;
+    public string $image;
     public string $color;
 
     /**
@@ -29,9 +29,9 @@ class FieldData
 
     public function __construct($attributes)
     {
-        $this->id = $attributes['id'] ?? 0; // Valor por defecto en caso de que no esté definido
-        $this->name = $attributes['name'];
-        $this->img = $attributes['img'];
+        $this->id = $attributes['id'];
+        $this->name = $attributes['field'];
+        $this->image = $attributes['image'];
         $this->color = $this->determineColor($attributes);
     }
 
@@ -44,6 +44,6 @@ class FieldData
     private function determineColor($attributes): string
     {
         // Si el campo no está definido en el mapa de colores, se devuelve blanco
-        return self::$colorMap[$attributes['name']] ?? '#FFFFFF';
+        return self::$colorMap[$attributes['field']] ?? '#FFFFFF';
     }
 }
