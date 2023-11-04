@@ -22,4 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::apiResource('digimons', DigimonController::class);
+Route::middleware('firebase.auth')->group(function () {
+    // Rutas que requieren autenticación de Firebase
+    Route::apiResource('digimons', DigimonController::class);
+});
