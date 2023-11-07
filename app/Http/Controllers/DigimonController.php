@@ -16,13 +16,31 @@ class DigimonController extends Controller
 
     public function index(Request $request)
     {
-        $response = Http::get('https://digi-api.com/api/v1/digimon');
-        if ($response->successful()) {
-            $data = $response->json()['content'];
-            $digimons = $this->digimonTransformerService->transformApiListResponseToDigimonDataArray($data);
-            return response()->json(['data' => $digimons]);
+        try {
+            $page = $request->query('page', 1);
+            $name = $request->query('name', '');
+            $response = Http::get(
+                'https://digi-api.com/api/v1/digimon',
+                // add pageSize to query params
+                [
+                    'page' => $page,
+                    'pageSize' => 30,
+                    'name' => $name
+                ]
+            );
+            if ($response->successful()) {
+                // pregunta si existe content
+                if (!array_key_exists('content', $response->json())) {
+                    return response()->json(['data' => []]);
+                }
+                $data = $response->json()['content'];
+                $digimons = $this->digimonTransformerService->transformApiListResponseToDigimonDataArray($data);
+                return response()->json(['data' => $digimons]);
+            }
+        } catch (\Throwable $th) {
+
+            return response()->json(['error' => 'Error al obtener los datos'], 500);
         }
-        return response()->json(['error' => 'Error al obtener los datos'], 500);
     }
 
     public function show($id)

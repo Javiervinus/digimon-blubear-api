@@ -18,7 +18,7 @@ class FieldData
         'Nature Spirits' => '#478F5F',
         'Virus Busters' => '#C9BCAF',
         'Wind Guardians' => '#55A2B4',
-        'Unknown' => '#FFFFFF',
+        'Unknown' => '#000000',
         'Metal Empire' => '#A6A4A3',
         'Deep Savers' => '#4267A2',
         'Nightmare Soldiers' => '#444881',
