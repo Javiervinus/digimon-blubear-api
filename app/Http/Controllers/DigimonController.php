@@ -14,9 +14,17 @@ class DigimonController extends Controller
         $this->digimonTransformerService = $digimonTransformerService;
     }
 
+    /**
+     *
+     *  Obtiene una lista de digimons de una API externa y transforma la respuesta en un array de datos de Digimon.
+     *
+     * @param Request $request The HTTP request object.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the transformed Digimon data.
+     */
     public function index(Request $request)
     {
         try {
+            // extraemos el query param page y el de name
             $page = $request->query('page', 1);
             $name = $request->query('name', '');
             $response = Http::get(
@@ -28,8 +36,10 @@ class DigimonController extends Controller
                     'name' => $name
                 ]
             );
+            // pregunta si la respuesta fue exitosa
             if ($response->successful()) {
                 // pregunta si existe content
+                // el content no existe cuando no hay resultados
                 if (!array_key_exists('content', $response->json())) {
                     return response()->json(['data' => []]);
                 }
@@ -43,6 +53,12 @@ class DigimonController extends Controller
         }
     }
 
+    /**
+     * Muestra un digimon específico
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         $response = Http::get('https://digi-api.com/api/v1/digimon/' . $id);

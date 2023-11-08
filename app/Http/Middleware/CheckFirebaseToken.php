@@ -16,7 +16,7 @@ class CheckFirebaseToken
         $this->firebaseAuth = Firebase::auth();
     }
     /**
-     * Handle an incoming request.
+     * Maneja la petición entrante para verificar el token de Firebase.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
@@ -28,7 +28,6 @@ class CheckFirebaseToken
             try {
                 $verifiedIdToken = $this->firebaseAuth->verifyIdToken($token);
                 $request->attributes->set('uid', $verifiedIdToken->claims()->get('sub'));
-                // Aquí podrías añadir el usuario a la request, si necesitas más datos del usuario más allá del UID.
             } catch (\Kreait\Firebase\Exception\FirebaseException $e) {
                 // El token es inválido
                 return response()->json(['error' => 'Unauthorized'], 401);
